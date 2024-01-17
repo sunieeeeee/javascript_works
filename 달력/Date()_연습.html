@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'IBM Plex Sans KR', sans-serif;}
+    
+    body {display: flex; align-items: center; justify-content: center; height: 80vh} 
+    
+    td {width: 50px; height: 50px; text-align: center;}
+    table {border: 1px solid red;}
+    table thead tr:first-of-type {font-weight: bold;} 
+    table thead tr:last-of-type {background-color: rgb(243, 172, 196);}
+
+    table tbody tr td{border: 1px solid rgb(243, 172, 196);}
+  </style>
+
+
+</head>
+<body>
+  <table class="calendar">
+    <thead>
+      <tr>
+        <td style="cursor: pointer;">&#60;</td>
+        <td colspan="5">
+          <span id="calYear"></span>년
+          <span id="calMonth"></span>월
+        </td>
+        <td style="cursor: pointer;">&#62;</td>
+      </tr>
+      <tr>
+        <td>일</td>
+        <td>월</td>
+        <td>화</td>
+        <td>수</td>
+        <td>목</td>
+        <td>금</td>
+        <td>토</td>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+
+  <script>
+    let tbodyCalendar  = document.querySelector('.calendar tbody');
+    let nowDate = new Date();
+
+    // thead에 년, 월 넣어주기
+    document.querySelector('#calYear').innerText = nowDate.getFullYear();
+    document.querySelector('#calMonth').innerText = nowDate.getMonth()+1;
+
+    // 이번 달 첫 번째 날짜
+    let firstDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+
+    // 이번 달 마지막 날짜
+    let lastDate = new Date(nowDate.getFullYear(), nowDate.getMonth()+1, 0);
+
+    // tbody안에 tr 생성
+    let nowRow = tbodyCalendar.insertRow();
+
+    // 달의 첫번째 주의 첫번째 요일의 시작위치 지정 
+    // (해당 요일의 해당숫자만큼 cell을 생성시켜서 뒤로 밀리게 함)
+    for(let i=0; i<firstDate.getDay(); i++) {
+      let nowColumn = nowRow.insertCell();
+    }
+
+    // 날짜 생성
+    for(let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate()+1)) {
+      let nowColumn = nowRow.insertCell();
+      nowColumn.innerText = nowDay.getDate();
+
+      if(nowDay.getDay() === 0){
+        nowColumn.style.color = 'red'
+      }
+
+      if(nowDay.getDay() === 6){
+        nowColumn.style.color = 'blue'
+        nowRow = tbodyCalendar.insertRow();
+      }
+
+    }
+
+
+
+
+
+
+  </script>
+</body>
+</html>

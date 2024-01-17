@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>input_spinner</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      height: 100vh;
+    }
+    .container .wrap {
+      position: relative;
+      display: flex;
+      border: 1px solid #000
+    }
+    .container .wrap::before{
+      position: absolute;
+      top: 50%;
+      left: -40%;
+      transform: translateY(-50%);
+    }
+    .container .wrap:nth-child(1)::before {
+      content :'대인';
+    }
+    .container .wrap:nth-child(2)::before {
+      content :'소인';
+    }
+    .container .wrap * {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      font-size: 32px;
+    }
+    .container .wrap button {
+      cursor: pointer;
+      background-color: transparent;
+      border: 0;
+    }
+    .container .wrap input{
+      display: block;
+      width: 100px;
+      border: 0;
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+      text-align: center;
+    } 
+    .container .total::before {
+      content: 'total';
+      margin-left: -20px;
+      font-size: 18px;
+    }
+    .container .total {
+      align-items: center;
+      justify-content: center;
+      border:0;
+      border-bottom: 1px solid #000;
+      width: 100px;
+      height: 50px;
+      font-size: 26px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="wrap">
+      <button class="minus btn" type="button" onclick="minusEvent(this, 0)">-</button>
+      <input class="num" type="text" value="0"></input>
+      <button class="plus btn" type="button" onclick="plusEvent(this, 8)">+</button>
+    </div>
+    <div class="wrap">
+      <button class="minus btn" type="button" onclick="minusEvent(this, 0)">-</button>
+      <input class="num" type="text" value="0"></input>
+      <button class="plus btn" type="button" onclick="plusEvent(this, 12)">+</button>
+    </div>
+    <div class="wrap total"></div>
+  </div>
+
+
+
+  <script>
+    const btnAll = document.querySelectorAll('.btn');
+    const total = document.querySelector('.total');
+    const numAll = document.querySelectorAll('.num');
+    let numSibling;
+    let count =0;
+    let numTotal = [];
+
+    function plusEvent(obj, plusLimit){
+      numSibling = obj.previousElementSibling
+      count = numSibling.value;
+      if(count < plusLimit){ // count가 8이하이면
+        count++;
+        numSibling.value = count;
+        console.log(count);
+      }else{
+        return;
+      }
+    }
+    
+    function minusEvent(obj, minusLimit){
+      numSibling = obj.nextElementSibling
+      count = numSibling.value;
+      if(count > minusLimit){
+        count--;
+        numSibling.value = count;
+        console.log(count);
+      }else{
+        return;
+      }
+    }
+
+    btnAll.forEach((btnItem, btnIdx) => {
+      btnItem.addEventListener('click',()=>{
+        console.log(numAll.value);
+      });
+    });
+  
+  </script>
+</body>
+</html>

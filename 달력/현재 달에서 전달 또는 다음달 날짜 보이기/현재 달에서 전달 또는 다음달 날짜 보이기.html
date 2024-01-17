@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'IBM Plex Sans KR', sans-serif;}
+    body {display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh;}
+
+    td {width: 50px; height: 50px; text-align: center;}
+    table thead {font-weight: bold;}
+    table thead tr td{ background-color: rgb(215, 215, 250);}
+
+    table tbody tr td {background-color: lavender;}
+
+    .today {background-color: rgb(134, 134, 247); color: #fff; font-weight: 600;}
+    .pastDay {background-color: rgb(184, 184, 204); color: #777 !important; opacity: 0.5;}
+
+    .futureDay.choiceDay, .today.choiceDay{            
+      border: 3px solid rgb(134, 134, 247);
+      cursor: pointer;
+    }
+
+
+
+
+
+    /* .today_go {
+      display: flex; justify-content: flex-end; width: 100%; margin-bottom: 10px;;}
+    .today_go > button{
+      width: 80px; border-radius: 10px; background-color: lavender;
+      border: 1px solid rgb(134, 134, 247); font-size: 22px;} */
+
+
+
+
+  </style>
+</head>
+<body>
+  <div class="today_go">
+    <button onclick="buildCalendar()">today</button>
+  </div>
+  <table class="calendar">
+    <thead>
+      <tr>
+        <td onclick="prevCalendar()" style="cursor: pointer">&#60;</td>
+        <td colspan="5">
+          <span id="calYear"></span>년
+          <span id="calMonth"></span>월
+        </td>
+        <td onclick="nextCalendar()" style="cursor: pointer">&#62;</td>
+      </tr>
+      <tr>
+        <td>일</td>
+        <td>월</td>
+        <td>화</td>
+        <td>수</td>
+        <td>목</td>
+        <td>금</td>
+        <td>토</td>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    window.onload = function(){buildCalendar()};
+  //-------------------------- 현재달의 달력생성 --------------------------//
+  let nowDate = new Date(); // 현재 달을 페이지 로드한 날의 달로 초기화
+  
+  let today = new Date(); // 페이지를 로드한 날짜를 저장
+  today.setHours(0,0,0,0);
+
+  function buildCalendar(){
+    let calendarTable = document.querySelector('.calendar');
+    let tbody = calendarTable.querySelector('tbody');
+
+    // 이번달 첫번째 날짜
+    let firstDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+    
+    // 이번달 마지막 날짜
+    let lastDate = new Date(nowDate.getFullYear(), nowDate.getMonth()+1, 0);
+    
+    // 년,월 입력
+    document.querySelector('#calYear').innerText = firstDate.getFullYear();
+    document.querySelector('#calMonth').innerText = firstDate.getMonth()+1; 
+
+    // 이전 출력결과가 남아있는 경우 초기화
+    tbody.innerHTML = '';
+
+    let nowRow = tbody.insertRow();
+
+    // 이전 달의 마지막 주 날짜들
+    let prevLastDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), 0).getDate();
+    for (let i = firstDate.getDay() - 1; i >= 0; i--) {
+      let prevDayColumn = nowRow.insertCell();
+      prevDayColumn.innerText = prevLastDate - i;
+      prevDayColumn.className = 'pastDay';
+    }
+
+    //현재 달의 날짜들
+    for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) {
+      let nowColumn = nowRow.insertCell();
+      nowColumn.innerText = nowDay.getDate();
+
+      if (nowDay.getDay() === 0) {
+        nowColumn.style.color = 'red';
+      }
+      if (nowDay.getDay() === 6) {
+        nowColumn.style.color = 'blue';
+        nowRow = tbody.insertRow();
+      }
+
+      // 지난날인 경우
+      if (nowDay < today) {
+        nowColumn.className = 'pastDay';
+      }
+      // 오늘인 경우
+      else if (nowDay.toDateString() === today.toDateString()) {
+        nowColumn.className = 'today';
+        nowColumn.onclick = function () { choiceDate(this) };
+      }
+      // 미래인 경우
+      else {
+        nowColumn.className = 'futureDay';
+        nowColumn.onclick = function () { choiceDate(this) };
+      }
+    }
+
+    // 다음 달의 첫번째 주의 날짜들
+    let nextMonthFirstDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1);
+    while (nowRow.cells.length < 7) {
+      let nextDayColumn = nowRow.insertCell();
+      nextDayColumn.innerText = nextMonthFirstDate.getDate();
+      nextDayColumn.classList.add('pastDay');
+      nextDayColumn.onclick = function () {
+        choiceDate(this);
+      };
+      nextMonthFirstDate.setDate(nextMonthFirstDate.getDate() + 1);
+    }
+  }
+
+  // 날짜 선택
+  function choiceDate(nowColumn) {
+    let choiceDay = document.querySelector('.choiceDay');
+    if (choiceDay) {
+      choiceDay.classList.remove('choiceDay');
+    }
+    nowColumn.classList.add('choiceDay');
+  }
+
+  // 이전달 버튼 클릭
+  function prevCalendar() {
+    nowDate.setMonth(nowDate.getMonth() - 1);
+    buildCalendar();
+  }
+
+  // 다음달 버튼 클릭
+  function nextCalendar() {
+    nowDate.setMonth(nowDate.getMonth() + 1);
+    buildCalendar();
+  }
+
+
+  </script>
+</body>
+</html>

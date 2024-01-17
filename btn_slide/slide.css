@@ -1,0 +1,85 @@
+* {margin: 0; padding: 0; box-sizing: border-box;}
+ul, li {list-style: none;}
+
+.container {
+  width: 620px;
+  margin: 0 auto;
+  border: 1px solid black
+}
+
+.album {
+  width: inherit; 
+  height: 400px;
+  overflow: hidden;
+  border: 1px solid red;
+}
+
+.images {
+  display: flex;
+  width: 2560px;
+  height: inherit;
+  transform: translateX(0px);
+  /* 
+  < transition-property >
+  뜻 : transition의 속성
+  - css 속성을 지정함
+  - 어떤 속성에 트렌지션 효과를 적용할지를 지정
+  all : 기본값, 모든 속성에 트렌지션 효과가 나타남
+  none : 아무 속성도 트렌지션 효과가 나타나지 않음
+  porperty : 트렌지션 효과를 적용하고 싶은 css속성
+  */
+  transition-property: transform;  
+  transition-duration: 1s;
+  border: 1px solid blue;
+}
+.images:active {
+  cursor: grab;
+}
+
+.image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 640px; 
+  height: inherit;
+  font-size: 100px;
+}
+.image:nth-child(1) {
+  background-color: tomato;
+}
+.image:nth-child(2) {
+  background-color: teal;
+}
+.image:nth-child(3) {
+  background-color: orange;
+}
+.image:nth-child(4) {
+  background-color: green;
+}
+
+button {
+  width: 100px; 
+  height: 30px; 
+  border: none;
+  color: #fff;
+  background-color: blueviolet;
+  cursor: pointer;
+}
+button:disabled {
+  background-color: gray;
+}
+.prev {
+  float: left;
+}
+.next {
+  float: right;
+}
+
+.count {
+  background-color: lightpink;
+  width: 100px;
+  height: 100px;
+}
+
+
+

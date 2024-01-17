@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>체크박스</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      border: 1px solid red;
+    }
+    .container .inner {
+      border: 1px solid #000;
+    }
+    .container .inner .check_wrap {
+      display: flex;
+      gap: 20px;
+      margin:10px
+    }
+    .container .inner .check_wrap input {
+      width: 30px; 
+      height: 30px;
+    }
+    .container .inner .check_wrap label {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="inner">
+      <div class="check_wrap">
+        <input id="check_all" type="checkbox">
+        <label for="check_all">전체</label>
+      </div>
+      <div class="check_wrap">
+        <input id="check_1" type="checkbox">
+        <label for="check_1">체크_1</label>
+      </div>
+      <div class="check_wrap">
+        <input id="check_2" type="checkbox">
+        <label for="check_2">체크_2</label>
+      </div>
+      <div class="check_wrap">
+        <input id="check_3" type="checkbox">
+        <label for="check_3">체크_3</label>
+      </div>
+      <div class="check_wrap">
+        <input id="check_4" type="checkbox">
+        <label for="check_4">체크_4</label>
+      </div>
+
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    /*
+      <제이쿼리> 
+      const checkWrap = $('.check_wrap:not(:first-child)');
+      const checkAll = $('#check_all')
+      let checkBoxLen = checkWrap.length;
+
+      console.log(checkBoxLen);
+      checkWrap.on({
+        click: function(){
+          let chekedLen =  $('.check_wrap:not(:first-child) input:checked').length;
+          if(checkBoxLen === chekedLen ) {
+            checkAll.prop('checked',true);
+          }else {
+            checkAll.prop('checked',false);
+          }
+        }
+      });
+
+      checkAll.on({
+        click: function(){
+          if( $(this).prop('checked') === true ){ //체크되어있으면
+            checkWrap.children('input').prop('checked',true);
+
+          }else {
+            checkWrap.children('input').prop('checked',false);
+
+          }
+          
+        }
+      });  
+*/
+    
+    //자바스크립트
+    const CHECK = document.querySelectorAll('input:not([id="check_all"]');
+    const CHECKALL = document.querySelector('#check_all');
+    let checkLen = CHECK.length;
+    let checkedLen;
+    CHECK.forEach(checkItem => {
+      checkItem.addEventListener('change',(e)=>{
+        checkedLen = document.querySelectorAll('input:not([id="check_all"]):checked').length;
+
+         if(checkLen === checkedLen){
+          console.log('true');
+          CHECKALL.checked = true;
+         }else {
+          CHECKALL.checked = false;
+         }
+      });
+      
+    });
+
+    CHECKALL.addEventListener('change',()=>{
+      CHECK.forEach((checkItem, checkIdx)=>{
+        checkedLen = document.querySelectorAll('input:not([id="check_all"]):checked').length;
+
+        checkItem.checked=true;
+
+        if( CHECKALL.checked === false ) {
+          checkItem.checked=false;
+        }
+      });
+    });
+
+
+  </script>
+</body>
+</html>

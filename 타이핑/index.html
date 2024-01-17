@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    p {font-size: 20px;}
+    span {color: lightcoral}
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+  <script>
+    let box = document.querySelector('.box');
+    let pTag = document.createElement('p');
+    let text = '안녕하세요. <span>온라인투어</span> 입니다.';
+    let texttSplit ;
+
+    box.appendChild(pTag);
+    pTag.innerHTML = text;
+    
+    texttSplit = pTag.textContent.split('');
+
+    let i =0;
+    pTag.innerHTML = '';
+
+    let interval = function (){
+      let inner = texttSplit[i++] ?? '';
+      pTag.innerHTML +=  inner;
+
+      if(i == texttSplit.length){
+        setTimeout(() => {
+          pTag.innerHTML = '';
+          i=0;  
+        }, 800);
+      }
+    }
+    
+    setInterval(interval, 100);
+
+    
+
+    
+
+    
+    
+    
+
+
+      
+    
+    
+  
+
+
+
+    
+
+
+    
+
+  </script>
+</body>
+</html>

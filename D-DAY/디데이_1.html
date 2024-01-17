@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>디데이 출력 예제</title>
+    <style>
+      body {
+        /* background-color: #555 */
+      }
+      #d-day {
+        display: flex;
+        gap: 10px;
+     
+      }
+      #d-day span:not(.next_event) {
+        /* display: flex;
+        align-items: center;
+        justify-content: center; */
+        display: block;
+        /* margin-right: 10px; */
+        width: 50px;
+        height: 50px;
+        background-color: lightskyblue;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 900;
+        font-size: 20px;
+        text-align: center;
+        line-height: 50px;
+      }
+      #d-day span.next_event {
+        line-height: 50px;
+        background-color: transparent;
+        color: #000
+      }
+      #d-day span.none {
+        line-height: 50px;
+        background-color: transparent;
+        color: #000
+      }
+    </style>
+  </head>
+  <body>
+    <h1>디데이 출력 예제</h1>
+    <p id="d-day"></p>
+
+    <script>
+      // 대상 날짜들 배열
+      let targetDates = [
+        new Date("2023-05-08"),
+        new Date("2023-05-09"),
+        new Date("2023-05-20")
+      ];
+
+      // 대상 날짜들 배열에서 현재 기준으로 디데이를 계산하는 인덱스 변수
+      let index = 0;
+
+      function dateFunction(){
+        let today = new Date(); // 매초마다 현재 날짜와 시간을 새로 가져옴
+        let targetDate = targetDates[index]; // 대상 날짜
+        
+        // 디데이 계산 코드
+        let dDay = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (dDay > 0) {  //디데이 전일때(0보다 클 때)
+          document.querySelector("#d-day").innerHTML = `<span>D</span><span class='none'>-</span><span>${dDay}</span>`;
+        } else if (dDay === 0) {   // 디데이 당일(0일때)일 때
+          document.querySelector("#d-day").innerHTML = "<span>D</span><span class='none'>-</span><span>D</span><span>A</span><span>Y</span>";
+          
+        } else {  // 디데이가 지났을 때 다음특가 디데이 보여주기 ()
+          index++; // 다음 날짜로 이동
+          
+          
+          if (index >= targetDates.length) { // 배열을 벗어나면 다시 0으로 초기화
+            index = 0;
+          }
+        }
+        
+        if(index>0){
+          document.querySelector("#d-day").innerHTML = `<span class='next_event'>다음 특가까지</span> <span>D</span><span>-</span><span>${Math.abs(dDay)}</span>`;
+        }
+        console.log('dDay (디데이) : ' + dDay);
+        console.log('index (타겟 날짜 번호) : ' + index);
+
+      }
+      dateFunction();
+
+      // setInterval(function() {
+      //   dateFunction();
+      //   /*
+      //     1. n번째 날짜일 때
+      //       - 디데이 전일 때
+      //       - 디데이 당일 일 때
+      //       - 정오가 되면(디데이가 지나면) 다음 타겟날짜로 되게 index++ 해주기
+
+      //     2. 날짜 방번호가 1 일때 (index === 1 일 때, 두번째 날짜일 때)
+      //       - 디데이 전일 때 앞에 "다음 특가까지" 붙게 하기
+      //   */
+      // }, 1000);
+    </script>
+  </body>
+</html>
+
+
+
+
+
+      
+
+
+
+
+
+
+

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>달력연습</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'IBM Plex Sans KR', sans-serif;}
+    td {width: 50px; height: 50px; text-align: center;}
+
+    thead tr td {background-color: rgb(195, 195, 250); font-weight: bold;}
+    tbody tr td {background-color: rgb(208, 208, 242);}
+    
+    .prevMonthDay, .nextMonthDay {background-color: #fff; color: #ccc;}
+    .pastDay {background-color: rgb(246, 246, 253) !important; color: #8d8d8d !important}
+    .today {border: 3px solid rgb(95, 95, 246)}
+  </style>
+</head>
+<body>
+  <table class="calendar">
+    <thead>
+      <tr>
+        <td onclick="prevCalendar()" style="cursor: pointer;">&#60;</td>
+        <td class="calDate" colspan="5"></td>
+        <td onclick="nextCalendar()" style="cursor: pointer;">&#62;</td>
+      </tr>
+      <tr>
+        <td>일</td>
+        <td>월</td>
+        <td>화</td>
+        <td>수</td>
+        <td>목</td>
+        <td>금</td>
+        <td>토</td>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    window.onload = function(){buildCalendar()}
+
+    let tbodyCalendar = document.querySelector('.calendar tbody');
+    let calDate = document.querySelector('.calDate');
+
+    let nowDate = new Date();
+    let today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    function buildCalendar(){
+
+      let firstDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+      let lastDate = new Date(nowDate.getFullYear(), nowDate.getMonth()+1, 0);
+
+      //getMonth() -> 0부터 시작 -> 그렇기 때문에 +1을 해야됨
+      calDate.innerHTML = `${nowDate.getFullYear()}년 ${nowDate.getMonth()+1}월`;
+
+      // 이전 출력결과가 남아있는 경우 초기화
+      tbodyCalendar.innerHTML = '';
+      let nowRow =  tbodyCalendar.insertRow();
+
+      //이전 달의 마지막 주 날짜들
+      /*
+        new Date(year, month, day) 형식으로 전달할 때에는 연도(year), 월(month), 일(day)의 순서를 지켜야 한다. 
+      */
+      
+      
+      
+      //------------ 이전 달의 마지막 일 ------------//
+      let prevMonthDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), 0).getDate();
+
+      for(let i=firstDate.getDay()-1; i>=0; i--){
+        let prevDayColumn = nowRow.insertCell();
+        prevDayColumn.innerHTML = prevMonthDate - i;
+      
+        prevDayColumn.className = 'prevMonthDay';
+      }
+
+      //------------ 현재 달의 날짜들 ------------//
+      for(let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate()+1)){
+        let nowColumn = nowRow.insertCell();
+        nowColumn.innerHTML = nowDay.getDate();
+
+        //토요일 일때
+        if(nowDay.getDay() === 6 ){
+          nowRow =  tbodyCalendar.insertRow();
+          
+          nowColumn.style.color = 'blue';
+        }
+
+        //일요일 일때
+        if(nowDay.getDay() === 0) {
+          nowColumn.style.color = 'red';
+        }
+        
+        //지난날 일때
+        if(nowDay < today){
+
+          nowColumn.className = 'pastDay';
+        }
+
+        //오늘 (today)
+        if(nowDay.toDateString() === today.toDateString()){
+          nowColumn.className = 'today';
+        }
+
+        //미래일때 
+        if(nowDay > today){
+          nowColumn.className = 'futureDay';
+        }
+      }
+
+//------------ 다음달의 첫번째 주의 날짜들 ------------//
+let nextMonthFirstDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1);
+let nextMonthLastDate = new Date(nextMonthFirstDate.getFullYear(), nextMonthFirstDate.getMonth() + 1, 0);
+
+// 다음 달의 첫번째 날짜를 찾아서 시작할 셀(td) 인덱스 계산
+let startCellIndex = nextMonthFirstDate.getDay();
+
+// 다음 달의 첫번째 날짜가 현재 달력의 마지막 날짜 이후에 있는 경우에만 다음달의 날짜를 표시
+if (startCellIndex !== 0) {
+  // 현재 달력의 마지막 날짜 다음 셀부터 시작
+  let nextRow = tbodyCalendar.rows[tbodyCalendar.rows.length - 1];
+
+  for (let j = startCellIndex; j < 7; j++) {
+    let nextDayColumn = nextRow.insertCell();
+    let nextDay = nextMonthFirstDate.getDate();
+
+    // 다음 달의 첫 번째 날짜가 마지막 날짜를 넘어가면 종료
+    if (nextDay > nextMonthLastDate.getDate()) {
+      break;
+    }
+
+    nextDayColumn.classList.add('nextMonthDay');
+    nextDayColumn.innerHTML = nextDay;
+
+    nextMonthFirstDate.setDate(nextDay + 1);
+
+    if (nextDayColumn.cellIndex === 6) {
+      nextRow = tbodyCalendar.insertRow();
+    }
+  }
+}
+    }
+
+    //------------ 다음달 클릭 ------------//
+    function nextCalendar(){
+      nowDate.setMonth(nowDate.getMonth()+1);
+      buildCalendar();
+    }
+
+    //------------ 이전달 클릭 ------------//
+    function prevCalendar(){
+      nowDate.setMonth(nowDate.getMonth()-1);
+      buildCalendar();
+    }
+
+
+    
+    
+
+
+
+
+  </script>
+</body>
+</html>

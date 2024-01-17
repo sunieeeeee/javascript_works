@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    ol, ul, li {list-style: none;}
+    button {background-color: transparent; border: 0;}
+    input[type="checkbox"] {margin-right: 10px; width: 20px; height: 20px;}
+    input[type="text"] {padding: 0 10px; border: 0; border-bottom: 1px solid #000; outline: none; font-size: 22px;}
+
+
+    body {display: flex; align-items: center; justify-content: center; width: 100vw; height: 100vh;}
+    .container {padding: 10px; width: fit-content; border :1px solid #000}
+    .container .title {display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px;}
+    .container .title button{display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid #555; font-size: 30px; cursor: pointer;}
+
+    .container ul.list {display: flex; align-items: center; flex-direction: column; gap: 20px; justify-content: center;}
+    .container ul.list li input[type="text"].done {color: #929292; text-decoration:line-through;}
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3 class="title">오늘의 할 일 <button>+</button></h3>
+    <ul class="list">
+      <li>
+        <input type="checkbox">
+        <input type="text">
+      </li>
+      <li>
+        <input type="checkbox">
+        <input type="text" value="밥먹기">
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    let btn = document.querySelector('.container .title button');
+    let list = document.querySelector('.container .list');
+    let liElem = `<li>
+        <input type="checkbox">
+        <input type="text">
+      </li>`;
+    
+      btn.addEventListener('click', function(e){
+        list.insertAdjacentHTML('beforeend', liElem)
+      });
+
+      window.addEventListener('click', function(e){
+        chkBox = document.querySelectorAll('.list li input[type="checkbox"]');
+        
+        chkBox.forEach(function(chkItem, chkIdx){
+          console.log(e.target === chkItem);
+
+          if(e.target === chkItem){
+            e.target.nextElementSibling.classList.add('done');
+            e.target.nextElementSibling.readOnly  = true;      
+          }
+        });
+
+      });
+
+
+  </script>
+</body>
+</html>

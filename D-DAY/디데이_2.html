@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>디데이 출력 예제</title>
+    <style>
+      #d-day {
+        display: flex;
+        gap: 10px;
+     
+      }
+      #d-day span:not(.next_event) {
+        /* display: flex;
+        align-items: center;
+        justify-content: center; */
+        display: block;
+        /* margin-right: 10px; */
+        width: 50px;
+        height: 50px;
+        background-color: lightskyblue;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 900;
+        font-size: 20px;
+        text-align: center;
+        line-height: 50px;
+      }
+      #d-day span.next_event {
+        line-height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>디데이 출력 예제</h1>
+    <p id="d-day"></p>
+
+    <script>
+    var targetDates = [
+  new Date("2023-05-10"),
+  new Date("2023-05-15"),
+  new Date("2023-06-01"),
+  new Date("2023-07-01"),
+  new Date("2023-08-01")
+];
+
+var index = 0;
+setInterval(function() {
+  var today = new Date();
+  var targetDate = targetDates[index];
+  
+  var dDay = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  
+  if (dDay > 0) { //디데이 전일 때
+    if (index === 0) { //타겟날짜가 첫번째 날짜이면
+      document.querySelector("#d-day").innerHTML = `<span>D</span><span>-</span><span>${dDay}</span>`;
+    } else {
+      document.querySelector("#d-day").innerHTML = `<span class="next_event">다음 특가까지</span> <span>D</span><span>+</span><span>${Math.abs(dDay)}</span>`;
+    }
+  } else if (dDay === 0) {  //디데이 날 일 때
+    if (index === 0) {
+      document.querySelector("#d-day").innerHTML = "D-Day";
+    } else {
+      document.querySelector("#d-day").innerHTML = "다음 특가날!";
+    }
+  } else {
+    document.querySelector("#d-day").innerHTML = "<span>지난 특가</span>";
+  }
+  
+  if (dDay <= 0) {
+    index++;
+    if (index >= targetDates.length) {
+      index = 0;
+    }
+  }
+}, 1000);
+    </script>
+  </body>
+</html>
+
+
+
+
+
+      

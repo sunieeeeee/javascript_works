@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>가로스크롤</title>
+  <!-- 1.슬라이드 하나하나
+  2. 직접 옆으로 움직이는 슬라이드들을 담고있는 요소 (매우 긴 width를 가지고 있음)
+  3. 1번의 슬라이드요소를 1개씩 보여주면서 가려줄 요소 (overflow: hidden 필요) -->
+  <style>
+    :root {
+      --slide_width : 500px;
+    }
+
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    section {height: 100vh;}
+    section:nth-of-type(1) {background-color: lightpink;}
+    /* section:nth-of-type(2) {background-color: #fff;} */
+    section:nth-of-type(3) {background-color: lightgreen;}
+
+    .slide_section {position: sticky; top: 0; display: flex; justify-content: center; align-items:center; width: 100%;}
+    .slide_section .slide_container { width: var(--slide_width); overflow: hidden; border: 2px solid blueviolet}
+    .slide_section .slide_container .slide_inner {display: flex; flex-direction: row; width: calc(var(--slide_width) * 5); border: 1px solid red;}
+    .slide_section .slide_container .slide_inner .slide {width: var(--slide_width); height: 300px; border: 1px solid blue}
+  
+    .slide_section.slideOn {position: fixed; left: 0; top: 0;}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section></section>
+    <section class="slide_section">
+      <div class="slide_container">
+        <div class="slide_inner">
+          <div class="slide">01.</div>
+          <div class="slide">02.</div>
+          <div class="slide">03.</div>
+          <div class="slide">04.</div>
+          <div class="slide">05.</div>
+        </div>
+      </div>
+    </section>
+    <section></section>
+    <section></section>
+    <section></section>
+  </div>
+
+  <script>
+    let slideSec = document.querySelector('.slide_section'); 
+    let slideSecHei = slideSec.clientHeight;
+    let slideSecTop = slideSec.offsetTop;
+
+    let slideInner = document.querySelector('.slide_inner');
+    let slideInnerWid = slideInner.clientWidth;
+    
+    let slide = document.querySelectorAll('.slide');
+
+    let scrollTop;
+    let scrollPer;
+    let slidePer;
+    
+    // slideSec.style.height = `${slideInnerWid}px`;
+    console.log(slideInnerWid);
+    window.addEventListener('scroll', ()=>{
+      scrollTop = this.scrollY;
+      
+      if(scrollTop >= slideSecTop && scrollTop <= slideSecTop + slideSecHei) {
+        scrollTop = scrollTop - slideSecTop;
+        // console.log(scrollTop);
+        scrollPer=Math.floor((scrollTop/slideSecHei)*100);
+        console.log(scrollPer);
+        slidePer = Math.floor(scrollPer/slide.length);
+        scrollPer = Math.floor(scrollPer-slidePer);
+
+        // console.log((scrollTop/slideSecHei*100));
+        
+        slideInner.style.transform = `translateX(-${scrollPer}%)`
+        }
+    });
+  </script>
+</body>
+</html>

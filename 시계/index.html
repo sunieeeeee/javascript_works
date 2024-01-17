@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시계</title>
+</head>
+<body>
+  <p class="clock">
+    <span class="clock_time hour"></span>시
+    <span class="clock_time minutes"></span>분
+    <span class="clock_time second"></span>초
+  </p>
+  <script>
+    function getClock(){
+      let clock = document.querySelector('.clock');
+      let clockTime = document.querySelectorAll('.clock_time');
+      let hour = document.querySelector('.hour');
+      let minutes = document.querySelector('.minutes');
+      let second = document.querySelector('.second')
+
+      let time = new Date();
+      let hourTime = time.getHours();
+      let minutesTime = time.getMinutes();
+      let secondTime = time.getSeconds();
+
+      hour.innerHTML = hourTime;
+      minutes.innerHTML = minutesTime;
+      second.innerHTML = secondTime;
+
+      clockTime.forEach((idx) => {
+        if(idx.innerHTML.length === 1) {
+          idx.prepend('0')
+        }
+
+        if(idx.innerHTML.length === 0){
+          idx.prepend('00')
+        }
+      });
+    }
+    
+    setInterval(getClock, 1000);
+
+  </script>
+</body>
+</html>

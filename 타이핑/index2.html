@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    p {display: inline-block; font-size: 20px;}
+    .text_2 {color: lightcoral; font-weight: 600;}
+  </style>
+</head>
+<body>
+<div class="box">
+  <p class="text_1">안녕하세요</p>
+  <p class="text_2">온라인투어</p>
+  <p class="text_3">입니다.</p>
+</div>
+<script>
+  let pTag = document.querySelectorAll('.box p');
+  let pArray = [];
+  let pSplit = [];
+  let i=0;
+  let j=0;
+
+  
+    pTag.forEach((pItem, pIdx) => {
+      
+      pArray.push(pTag[pIdx].textContent.split(''));
+      pItem.innerHTML = '';
+      
+    });
+    // console.log(pArray.length);
+    function typing(){
+
+      if(i<pArray.length){
+        console.log(pArray[i]);
+        if(j<pArray[i].length){
+          console.log('i: ' + i++);
+          console.log()        
+         ;
+          //pTag[i].innerHTML+=pArray[i][j];
+        }
+      }
+      
+      // for(let i=0; i<pArray.length; i++ ){   
+      //   for(let j=0; j<pArray[i].length; j++){   
+      //     console.log(pTag[i]);
+      //     console.log(pArray[i][j]);
+      //     pTag[i].innerHTML+=pArray[i][j];
+      //   }
+      // }
+    }
+
+    // typing();
+
+  setInterval(typing, 700);
+
+  
+
+  
+</script>
+
+
+      
+    
+    
+  
+
+
+
+    
+
+
+    
+
+  </script>
+</body>
+</html>
